@@ -10,6 +10,10 @@ class Animal(LivingBeing, ABC):
         self.food = food_requirement * 2
         self.injury_time = 0
 
+    @abstractmethod
+    def gather_food(self):
+        pass
+
     def eat(self):
         """Consumes current food amount. Animal gets hungry and then starves if too low on food."""
         self.food -= self.food_requirement

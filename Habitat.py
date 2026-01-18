@@ -1,5 +1,6 @@
 import random
 from Plant import Plant
+from Animal import Animal
 
 class Habitat:
     """A habitat containing an ecosystem."""
@@ -36,6 +37,9 @@ class Habitat:
                 if isinstance(creature, Plant):
                     creature.grow()
                     self.calc_occupied_space()
+                if isinstance(creature, Animal):
+                    creature.gather_food()
+                    creature.eat()
         self.living_beings = [creature for creature in self.living_beings if creature not in deceased_living_beings]
 
 
