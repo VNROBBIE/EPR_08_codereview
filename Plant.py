@@ -12,6 +12,7 @@ class Plant(LivingBeing, ABC):
         self.size_growth_speed = size_growth_speed
 
     def grow(self):
+        """Plant grows based on growth speed."""
         self.new_size = self.size + self.size_growth_speed
         if self.new_size <= self.max_size and self.new_size + self.habitat.occupied_space <= self.habitat:
             self.size += self.size_growth_speed
