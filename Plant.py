@@ -1,4 +1,4 @@
-from abc import ABC, abstractmethod
+from abc import ABC
 from LivingBeing import LivingBeing
 
 class Plant(LivingBeing, ABC):
@@ -14,5 +14,4 @@ class Plant(LivingBeing, ABC):
     def grow(self):
         """Plant grows based on growth speed."""
         self.new_size = self.size + self.size_growth_speed
-        if self.new_size <= self.max_size and self.new_size + self.habitat.occupied_space <= self.habitat:
-            self.size += self.size_growth_speed
+        return self.new_size

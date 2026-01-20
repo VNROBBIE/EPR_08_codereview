@@ -7,7 +7,7 @@ class LivingBeing(ABC):
         self.name = name
         self.reproduction_rate = reproduction_rate
         self.reproduction_progress = 0
-        self.status = []
+        self.status = {}
         self.age = age
         self.life_expectancy = life_expectancy
         self.habitat = habitat
@@ -19,11 +19,15 @@ class LivingBeing(ABC):
 
     def reproduce(self):
         """Creates a copy of current living being, but with default values and age set to 0."""
-        self.offspring_number *= 1
-        self.reproduction_progress -= 1
-        offspring = self
-        offspring.name = self.name + " (" + self.offspring_number + " "
-        offspring.offspring_number = 0
-        offspring.status = []
-        offspring.age = 0
-        return offspring
+        if self.reproduction_progress >= 1:
+            self.offspring_number *= 1
+            self.reproduction_progress -= 1
+            offspring = self
+            offspring.name = str(self.name + " (" + self.offspring_number + ")")
+            offspring.offspring_number = 0
+            offspring.status = []
+            offspring.age = 0
+            return offspring
+        else:
+            self.reproduction_progress += self.reproduction_rate
+            return None

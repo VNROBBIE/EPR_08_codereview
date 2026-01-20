@@ -20,8 +20,10 @@ class Animal(LivingBeing, ABC):
         if self.food < 0:
             self.food = 0
             if "hungry" not in self.status:
-                self.status.append("hungry")
+                self.status.add("hungry")
                 print(self.name + " did not find enough food and is hungry.")
             else:
-                self.status.append("starved")
+                self.status.add("starved")
+        elif "hungry" in self.status:
+            self.status.remove("hungry")
 
