@@ -4,23 +4,30 @@ class Carnivore(Animal):
     """An animal, that requires food to survive."""
 
     def __init__(self, name, reproduction_rate, age, life_expectancy, habitat, food_requirement):
+        """Initializes new Carnivore."""
         super().__init__(name, reproduction_rate, age, life_expectancy, habitat, food_requirement)
         self.food_requirement = food_requirement
         self.food = food_requirement * 2
         self.injury_time = 0
 
     def gather_food(self, prey, RNG):
+        """Hunts and potentially kills an herbivore."""
+        #  Hunt has a 50% chance for success.
         if RNG <= 50:
             self.food += 1.5 * self.food_requirement
             print(prey + " has been fed to " + self.name + ".")
+            #  50/50 chance to catch a prey's disease.
             if "sick" in prey.status and RNG <= 25:
                 self.status.add("sick")
                 print("Its infection has spreaded to " + self.name)
+        #  Small chance for hunt to critically fail and injure the predator.
         elif RNG >= 90:
-            if "wounded" in self.status:
+            #  Predator dies if already injured.
+            if "injured" in self.status:
+                self.status.add("wounded")
                 print(self.name + " has been critically injured on a hunt.")
-
             else:
+                #  Predator gets injured in case of a critical failure.
                 self.status.add("injured")
                 print(self.name + " has injured itself on a hunt.")
 

@@ -10,6 +10,7 @@ class Herbivore(Animal):
         self.injury_time = 0
 
     def gather_food(self, plant):
+
         food_eaten = plant.size * 0.2
         plant.size -= food_eaten
         if plant.size < plant.min_size:
