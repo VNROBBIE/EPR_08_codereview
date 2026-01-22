@@ -4,6 +4,7 @@ class Plant(LivingBeing):
     """A plant occupying space in the habitat based on its size. Withers when size is below min size."""
 
     def __init__(self, name, reproduction_rate, age, life_expectancy, size, min_size, max_size, size_growth_speed):
+        """Initialize a plant."""
         super().__init__(name, reproduction_rate, age, life_expectancy)
         self.size = size
         self.min_size = min_size

@@ -117,11 +117,12 @@ class Habitat:
 
     def update_herbivores(self, herbivore):
         """Make all Herbivores eat a random plant until they are fully fed."""
-        plants_list = [plant for plant in self.living_beings if isinstance(plant, Plant)]
-        while len(plants_list) > 0 and herbivore.food < herbivore.food_requirement:
+        while herbivore.food < herbivore.food_requirement:
+            plants_list = [plant for plant in self.living_beings if isinstance(plant, Plant) and "withered" not in plant.status]
+            if len(plants_list) == 0:
+                break
             #  Eat a random plant.
             herbivore.gather_food(random.choice(plants_list))
-            herbivore.
 
 
     def living_being_death_chance(self, creature):

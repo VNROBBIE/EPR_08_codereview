@@ -4,6 +4,7 @@ class Tree(Plant):
     """Trees have a very high life expectancy compared to other plants."""
 
     def __init__(self, name, reproduction_rate, age, size, min_size, max_size, size_growth_speed):
+        """Initilizes a Plant."""
         super().__init__(name, reproduction_rate, age, size, min_size, max_size, size_growth_speed)
         self.life_expectancy = 100
 
