@@ -1,17 +1,15 @@
 from Animal import Animal
 
 class Herbivore(Animal):
-    """An animal, that requires food to survive."""
+    """A herbivore, that eats plants to survive."""
 
-    def __init__(self, name, reproduction_rate, age, life_expectancy, habitat, food_requirement):
-        super().__init__(name, reproduction_rate, age, life_expectancy, habitat, food_requirement)
-        self.food_requirement = food_requirement
-        self.food = food_requirement * 2
-        self.injury_time = 0
+    def __init__(self, name, reproduction_rate, age, life_expectancy, food_requirement):
+        """Initialize an Herbivore. They eat plants until their food-requirement is met."""
+        super().__init__(name, reproduction_rate, age, life_expectancy, food_requirement)
 
     def gather_food(self, plant):
-
         food_eaten = plant.size * 0.2
+        self.food += food_eaten
         plant.size -= food_eaten
         if plant.size < plant.min_size:
             plant.status.add("withered")

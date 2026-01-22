@@ -4,9 +4,9 @@ from LivingBeing import LivingBeing
 class Animal(LivingBeing, ABC):
     """An animal, that requires food to survive."""
 
-    def __init__(self, name, reproduction_rate, age, life_expectancy, food_requirement):
+    def __init__(self, name, reproduction_rate, age, food_requirement):
         """Initialize new animal."""
-        super().__init__(name, reproduction_rate, age, life_expectancy)
+        super().__init__(name, reproduction_rate, age)
         self.food_requirement = food_requirement
         self.food = food_requirement * 2
         self.injury_time = 0
@@ -28,3 +28,24 @@ class Animal(LivingBeing, ABC):
         elif "hungry" in self.status:
             self.status.remove("hungry")
 
+    def reproduce(self, season):
+        """Creates a copy of current living being, if reproduction progress reaches 1."""
+        #  Reproduction halts in winter.
+        if season != 3:
+            #  Offspring has default values and age is set to 0.
+            if self.reproduction_progress >= 1:
+                self.offspring_number += 1
+                #  Reset reproduction progress.
+                self.reproduction_progress -= 1
+                offspring = self
+                #  Bears same name as its parent, but enumerated.
+                offspring.name = str(self.name + " (" + self.offspring_number + ")")
+                offspring.offspring_number = 0
+                offspring.status = set()
+                offspring.age = 0
+                offspring.food = offspring.food_requirement * 2
+                return offspring
+            else:
+                #  Increase reproduction progress.
+                self.reproduction_progress += self.reproduction_rate
+                return None
