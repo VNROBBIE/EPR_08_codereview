@@ -8,11 +8,11 @@ from LivingBeing import LivingBeing
 class Animal(LivingBeing, ABC):
     """An animal, that requires food to survive."""
 
-    def __init__(self, name, reproduction_rate, age, food_requirement):
+    def __init__(self, name):
         """Initialize new animal."""
-        super().__init__(name, reproduction_rate, age)
-        self.food_requirement = food_requirement
-        self.food = food_requirement * 1.5
+        super().__init__(name)
+        self.food_requirement = 20
+        self.food = self.food_requirement * 1.5
         self.injury_time = 0
 
     @abstractmethod
@@ -25,19 +25,17 @@ class Animal(LivingBeing, ABC):
         Animal gets hungry and then starves if too low on food.
 
         >>> class TestAnimal(Animal):
-        ...    def __init__(self, name, reproduction_rate, age,
-        ...             food_requirement):
-        ...        super().__init__(name, reproduction_rate, age,
-        ...             food_requirement)
+        ...    def __init__(self, name):
+        ...        super().__init__(name)
         ...    def gather_food(self):
         ...        pass
-        >>> a = TestAnimal("ape", 1, 3, 10)
+        >>> a = TestAnimal("ape")
         >>> a.eat()
         >>> a.food
-        5.0
+        10.0
         >>> a.eat()
         ape did not find enough food and is hungry.
-        >>> a.food = 10
+        >>> a.food = 30
         >>> a.eat()
         ape is no longer hungry.
         """
@@ -59,16 +57,14 @@ class Animal(LivingBeing, ABC):
         if reproduction progress reaches 1.
 
         >>> class TestAnimal(Animal):
-        ...    def __init__(self, name, reproduction_rate, age,
-        ...                 food_requirement):
-        ...        super().__init__(name, reproduction_rate, age,
-        ...                 food_requirement)
+        ...    def __init__(self, name):
+        ...        super().__init__(name)
         ...    def gather_food(self):
         ...        pass
 
         No reproduction in winter.
 
-        >>> a = TestAnimal("ape", 1, 3, 10)
+        >>> a = TestAnimal("ape")
         >>> a.reproduction_progress = 1
         >>> offspring = a.reproduce(3)
         >>> offspring is None

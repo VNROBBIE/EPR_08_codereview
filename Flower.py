@@ -5,12 +5,12 @@ from Plant import Plant
 class Flower(Plant):
     """Flowers have a high reproduction rate compared to other plants."""
 
-    def __init__(self, name, age, size, min_size, max_size, size_growth_speed):
+    def __init__(self, name):
         """Initializes a flower."""
-        super().__init__(name=name,
-                         reproduction_rate=2.5,
-                         age=age,
-                         size=size,
-                         min_size=min_size,
-                         max_size=max_size,
-                         size_growth_speed=size_growth_speed)
+        super().__init__(name)
+        self.reproduction_rate = 1.5
+        self.age = 0
+        self.size = 5
+        self.min_size = 3
+        self.max_size = 10
+        self.size_growth_speed = 1

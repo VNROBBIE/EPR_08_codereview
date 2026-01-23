@@ -1,23 +1,19 @@
 __author__ = "8572770, Kesidis, 8724694, Tran"
 import copy
 import doctest
+from abc import ABC
 from LivingBeing import LivingBeing
 
 
-class Plant(LivingBeing):
+class Plant(LivingBeing, ABC):
     """
     A plant occupying space in the habitat based on its size.
     Withers when size is below min size.
     """
 
-    def __init__(self, name, reproduction_rate, age, size,
-                 min_size, max_size, size_growth_speed):
+    def __init__(self, name):
         """Initialize a plant."""
-        super().__init__(name, reproduction_rate, age)
-        self.size = size
-        self.min_size = min_size
-        self.max_size = max_size
-        self.size_growth_speed = size_growth_speed
+        super().__init__(name)
 
     def grow(self):
         """Plant grows based on its set growth speed."""
@@ -27,8 +23,11 @@ class Plant(LivingBeing):
     def reproduce(self, season):
         """
         Creates a copy of current plant, if reproduction progress reaches 1.
-
-        >>> b = Plant("bush", 1, 20, 20, 5, 30, 2)
+        >>> class TestPlant(Plant):
+        ...    def __init__(self, name):
+        ...        super().__init__(name)
+        ...        self.min_size = 5
+        >>> b = TestPlant("bush")
         >>> b.reproduction_progress = 1
 
         Plants do not reproduce in winter.

@@ -7,18 +7,20 @@ from Plant import Plant
 class Tree(Plant):
     """Trees have a very high life expectancy compared to other plants."""
 
-    def __init__(self, name, reproduction_rate, age,
-                 size, min_size, max_size, size_growth_speed):
+    def __init__(self, name):
         """Initilizes a tree."""
-        super().__init__(name, reproduction_rate, age, size,
-                         min_size, max_size, size_growth_speed)
-        self.life_expectancy = 100
+        super().__init__(name)
+        self.age = 0
+        self.size = 20
+        self.min_size = 15
+        self.max_size = 50
+        self.size_growth_speed = 2
 
     def reproduce(self, season):
         """
         Creates a copy of current tree. Trees can also reproduce during winter.
 
-        >>> t = Tree("tree", 1, 20, 20, 5, 30, 2)
+        >>> t = Tree("tree")
         >>> t.reproduction_progress = 2
 
         Plants do not reproduce in winter.

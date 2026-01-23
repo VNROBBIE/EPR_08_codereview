@@ -62,24 +62,24 @@ class Habitat:
         Calculates the current space occupied by plants.
 
         >>> h = Habitat(500)
-        >>> t = Tree("tree", 1, 5, 10, 5, 50, 2)
+        >>> t = Tree("tree")
         >>> h.add_living_being(t)
         >>> h.calc_occupied_space()
         >>> h.occupied_space
-        10
-        >>> f = Flower("flower", 4, 2, 0, 5, 1)
+        20
+        >>> f = Flower("flower")
         >>> h.add_living_being(f)
         >>> h.calc_occupied_space()
         >>> h.occupied_space
-        12
+        25
 
         Mosses do not add to the occupied space.
 
-        >>> m = Moss("moss", 10, 40, 10, 0.5)
+        >>> m = Moss("moss")
         >>> h.add_living_being(m)
         >>> h.calc_occupied_space()
         >>> h.occupied_space
-        12
+        25
         """
         self.occupied_space = 0
         for creature in self.living_beings:
@@ -91,15 +91,15 @@ class Habitat:
         Adds a new living being to the habitat.
 
         >>> h = Habitat(500)
-        >>> t = Tree("tree", 1, 5, 10, 5, 50, 2)
+        >>> t = Tree("tree")
         >>> h.add_living_being(t)
         >>> t in h.living_beings
         True
-        >>> f = Flower("flower", 4, 2, 0, 5, 1)
+        >>> f = Flower("flower")
         >>> h.add_living_being(f)
         >>> f in h.living_beings
         True
-        >>> m = Moss("moss", 10, 40, 10, 0.5)
+        >>> m = Moss("moss")
         >>> h.add_living_being(m)
         >>> m in h.living_beings
         True
@@ -142,14 +142,14 @@ class Habitat:
         Removes all deceased beings from the habitat.
 
         >>> h = Habitat(500)
-        >>> t = Tree("tree", 1, 5, 10, 5, 50, 2)
+        >>> t = Tree("tree")
         >>> h.add_living_being(t)
         >>> t.status.add("withered")
         >>> h.update_deaths()
         tree has died.
         >>> t in h.living_beings
         False
-        >>> b = Carnivore("bear", 0.5, 12, 10)
+        >>> b = Carnivore("bear")
         >>> h.add_living_being(b)
         >>> b.status.add("starved")
         >>> h.update_deaths()
@@ -171,12 +171,13 @@ class Habitat:
         Update the reproduction progress for all living beings.
 
         >>> h = Habitat(500)
-        >>> b = Carnivore("bear", 0.6, 12, 10)
+        >>> b = Carnivore("bear")
+        >>> b.reproduction_rate = 0.6
         >>> h.add_living_being(b)
         >>> h.update_reproduction(b)
         >>> b.reproduction_progress
         0.6
-        >>> t = Tree("tree", 1, 5, 10, 5, 50, 2)
+        >>> t = Tree("tree")
         >>> h.add_living_being(t)
         >>> len(h.living_beings)
         2
@@ -198,29 +199,32 @@ class Habitat:
         Grow every plant.
 
         >>> h = Habitat(500)
-        >>> t = Tree("tree", 1, 5, 10, 5, 50, 2)
+        >>> t = Tree("tree")
         >>> h.add_living_being(t)
         >>> h.update_plant(t)
         >>> t.size
-        12
+        22
 
         If no space is left, plants cannot grow further.
 
-        >>> f = Flower("flower", 4, 2, 0, 5, 1)
+        >>> f = Flower("flower")
         >>> h.add_living_being(f)
+        >>> f.size = 5
         >>> h.occupied_space = 500
         >>> h.update_plant(f)
         >>> f.size
-        2
+        5
 
         Mosses do not take any space and can grow infinitely.
 
-        >>> m = Moss("moss", 10, 40, 10, 20)
+        >>> m = Moss("moss")
         >>> h.add_living_being(m)
+        >>> m.size
+        20
         >>> h.occupied_space = 500
         >>> h.update_plant(m)
         >>> m.size
-        60
+        23
         """
         new_plant_size = plant.grow()
         #  Check if new size exceeds max size or available Habitat space.
@@ -235,15 +239,15 @@ class Habitat:
         Start a hunt for every carnivore.
 
         >>> h = Habitat(500)
-        >>> b = Carnivore("bear", 0.5, 12, 10)
+        >>> b = Carnivore("bear")
         >>> h.add_living_being(b)
-        >>> d = Herbivore("deer", 0.7, 2, 10)
+        >>> d = Herbivore("deer")
         >>> h.add_living_being(d)
         >>> random.seed(2)
         >>> h.update_hunt(b)
         deer has been fed to bear.
         >>> b.food
-        22.58487199515892
+        45.08487199515892
         >>> random.seed(5)
         >>> h.update_hunt(b)
         bear has injured itself while on a hunt.
@@ -263,16 +267,16 @@ class Habitat:
         Make all Herbivores eat random plants until they are fully fed.
 
         >>> h = Habitat(500)
-        >>> t = Tree("tree", 1, 5, 10, 5, 50, 2)
+        >>> t = Tree("tree")
         >>> h.add_living_being(t)
-        >>> d = Herbivore("deer", 0.7, 2, 10)
+        >>> d = Herbivore("deer")
         >>> h.add_living_being(d)
         >>> d.food = 5
         >>> h.update_herbivores(d)
         >>> d.food
-        10.904
+        16.808
         >>> t.size
-        4.096
+        8.192
         >>> t.status
         {'withered'}
 
@@ -297,7 +301,7 @@ class Habitat:
         Calculate whether a creature dies or not based on its status.
 
         >>> h = Habitat(500)
-        >>> b = Carnivore("bear", 0.6, 12, 10)
+        >>> b = Carnivore("bear")
         >>> h.add_living_being(b)
         >>> b.status.add("starved")
         >>> h.living_being_death_chance(b)

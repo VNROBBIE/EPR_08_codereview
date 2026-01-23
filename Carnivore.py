@@ -7,16 +7,16 @@ from Animal import Animal
 class Carnivore(Animal):
     """A carnivore, that hunts to acquire food."""
 
-    def __init__(self, name, reproduction_rate, age, food_requirement):
+    def __init__(self, name):
         """Initializes new Carnivore."""
-        super().__init__(name, reproduction_rate, age, food_requirement)
+        super().__init__(name)
 
     def gather_food(self, prey):
         """
         Hunts and potentially kills a herbivore.
 
-        >>> b = Carnivore("bear", 1, 7, 20)
-        >>> w = Carnivore("wolf", 1.5, 4, 10)
+        >>> b = Carnivore("bear")
+        >>> w = Carnivore("wolf")
         >>> w.status.add("sick")
         >>> random.seed(1)
         >>> b.gather_food(w)

@@ -5,13 +5,13 @@ from abc import ABC, abstractmethod
 class LivingBeing(ABC):
     """A living being, that must be either an animal or a plant."""
 
-    def __init__(self, name, reproduction_rate, age):
+    def __init__(self, name):
         """Initialize a new living being."""
         self.name = name
-        self.reproduction_rate = reproduction_rate
+        self.reproduction_rate = 0.8
         self.reproduction_progress = 0
         self.status = set()
-        self.age = age
+        self.age = 0
         self.life_expectancy = 50
         self.offspring_number = 0
 
