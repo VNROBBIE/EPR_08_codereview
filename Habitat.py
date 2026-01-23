@@ -301,7 +301,7 @@ class Habitat:
         Calculate whether a creature dies or not based on its status.
 
         >>> h = Habitat(500)
-        >>> b = Carnivore("bear", 0.5, 12, 10)
+        >>> b = Carnivore("bear", 0.6, 12, 10)
         >>> h.add_living_being(b)
         >>> b.status.add("starved")
         >>> h.living_being_death_chance(b)
@@ -365,18 +365,3 @@ class Habitat:
 
 if __name__ == "__main__":
     doctest.testmod()
-""" tests
-    h = Habitat(500)
-    b = Carnivore("bear", 0.6, 12, 10)
-    h.add_living_being(b)
-    h.update_reproduction(b)
-    print(b.reproduction_progress)
-    t = Tree("tree", 1, 5, 10, 5, 50, 2)
-    h.add_living_being(t)
-    h.update_reproduction(t)
-    print(h.living_beings)
-    for i in h.living_beings:
-        print(i.name)
-        """
-
-
