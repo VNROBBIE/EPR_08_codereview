@@ -124,16 +124,16 @@ class Habitat:
         #   Update every living being.
         for creature in self.living_beings:
             creature.incr_age()
-            self.update_herbivores(creature)
             #  Small chance to get sick.
             if RNG_sickness <= 10:
                 creature.status.add("sick")
             # Check if living being reproduces.
-            self.update_reproduction()
+            self.update_reproduction(creature)
             if isinstance(creature, Plant):
-                self.update_plant()
-            if self.season != 3 and isinstance(creature, Animal):
+                self.update_plant(creature)
+            if isinstance(creature, Carnivore) and self.season != 3:
                 self.update_hunt(creature)
+            if isinstance(creature, Herbivore):
                 self.update_herbivores(creature)
                 #  Consume food.
                 creature.eat()
@@ -252,15 +252,14 @@ class Habitat:
         >>> h.update_hunt(b)
         bear has injured itself while on a hunt.
         """
-        if isinstance(predator, Carnivore):
-            #   Create list of potential preys (herbivores).
-            if any(isinstance(prey, Herbivore) for prey in self.living_beings):
-                prey_list = [prey for prey in self.living_beings if isinstance(prey, Herbivore) and prey is not predator]
-            else:
-                #  Will resort to hunting other carnivores if no herbivores available.
-                prey_list = [prey for prey in self.living_beings]
-            if len(prey_list) > 0:
-                predator.gather_food(random.choice(prey_list))
+        #   Create list of potential preys (herbivores).
+        if any(isinstance(prey, Herbivore) for prey in self.living_beings):
+            prey_list = [prey for prey in self.living_beings if isinstance(prey, Herbivore) and prey is not predator]
+        else:
+            #  Will resort to hunting other carnivores if no herbivores available.
+            prey_list = [prey for prey in self.living_beings]
+        if len(prey_list) > 0:
+            predator.gather_food(random.choice(prey_list))
 
 
     def update_herbivores(self, herbivore):
@@ -364,4 +363,5 @@ class Habitat:
         return False
 
 if __name__ == "__main__":
+    f = Flower()
     doctest.testmod()
