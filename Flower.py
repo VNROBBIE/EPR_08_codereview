@@ -9,7 +9,6 @@ class Flower(Plant):
         """Initializes a flower."""
         super().__init__(name)
         self.reproduction_rate = 1.5
-        self.age = 0
         self.size = 5
         self.min_size = 3
         self.max_size = 10

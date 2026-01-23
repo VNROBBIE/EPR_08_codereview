@@ -10,7 +10,6 @@ class Tree(Plant):
     def __init__(self, name):
         """Initilizes a tree."""
         super().__init__(name)
-        self.age = 0
         self.size = 20
         self.min_size = 15
         self.max_size = 50

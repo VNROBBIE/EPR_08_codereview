@@ -8,7 +8,6 @@ class Moss(Plant):
     def __init__(self, name):
         """Initializes an instance of moss."""
         super().__init__(name)
-        self.age = 0
         self.size = 20
         self.min_size = 10
         self.max_size = float("inf")
