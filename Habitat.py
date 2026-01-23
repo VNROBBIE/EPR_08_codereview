@@ -363,5 +363,4 @@ class Habitat:
         return False
 
 if __name__ == "__main__":
-    f = Flower()
     doctest.testmod()
