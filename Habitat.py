@@ -124,7 +124,7 @@ class Habitat:
         #   Update every living being.
         for creature in self.living_beings:
             creature.incr_age()
-            self.update_herbivores()
+            self.update_herbivores(creature)
             #  Small chance to get sick.
             if RNG_sickness <= 10:
                 creature.status.add("sick")

@@ -1,5 +1,5 @@
 import random
-
+import doctest
 from Animal import Animal
 
 class Carnivore(Animal):
@@ -10,7 +10,23 @@ class Carnivore(Animal):
         super().__init__(name, reproduction_rate, age, food_requirement)
 
     def gather_food(self, prey):
-        """Hunts and potentially kills a herbivore."""
+        """
+        Hunts and potentially kills a herbivore.
+
+        >>> b = Carnivore("bear", 1, 7, 20)
+        >>> w = Carnivore("wolf", 1.5, 4, 10)
+        >>> w.status.add("sick")
+        >>> random.seed(1)
+        >>> b.gather_food(w)
+        wolf has been fed to bear.
+        Its infection has spreaded to bear.
+        >>> random.seed(5)
+        >>> b.gather_food(w)
+        bear has injured itself while on a hunt.
+        >>> random.seed(5)
+        >>> b.gather_food(w)
+        bear has been critically injured on a hunt.
+        """
         RNG_food = random.randint(1, 100)
         injury_percentage = 10
         #  Hunt has a 50% chance for success.
@@ -20,7 +36,7 @@ class Carnivore(Animal):
             #  50/50 chance to catch a prey's disease.
             if "sick" in prey.status and RNG_food <= 25:
                 self.status.add("sick")
-                print("Its infection has spreaded to " + self.name)
+                print("Its infection has spreaded to " + self.name + ".")
             prey.status.add("devoured")
         #  Small chance for hunt to critically fail and injure the predator.
         #  Chance is increased if prey is carnivorous.
@@ -35,3 +51,5 @@ class Carnivore(Animal):
                 self.status.add("injured")
                 print(self.name + " has injured itself while on a hunt.")
 
+if __name__ == "__main__":
+    doctest.testmod()

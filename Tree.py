@@ -1,4 +1,5 @@
 import copy
+import doctest
 from Plant import Plant
 
 class Tree(Plant):
@@ -11,7 +12,21 @@ class Tree(Plant):
 
 
     def reproduce(self, season):
-        """Creates a copy of current tree. Trees can also reproduce during winter."""
+        """
+        Creates a copy of current tree. Trees can also reproduce during winter.
+
+        >>> t = Tree("tree", 1, 20, 20, 5, 30, 2)
+        >>> t.reproduction_progress = 2
+
+        Plants do not reproduce in winter.
+
+        >>> offspring = t.reproduce(3)
+        >>> offspring is not None
+        True
+        >>> offspring = t.reproduce(0)
+        >>> offspring is not None
+        True
+        """
         #  Offspring has default values and age is set to 0. Size is set to minimum.
         if self.reproduction_progress >= 1:
             self.offspring_number += 1
@@ -27,5 +42,4 @@ class Tree(Plant):
             return offspring
 
 if __name__ == "__main__":
-    t = Tree("tree", 1, 5, 10, 5, 50, 1)
-    print(t.status)
+    doctest.testmod()

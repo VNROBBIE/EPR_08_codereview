@@ -4,7 +4,7 @@ class LivingBeing(ABC):
     """A living being, that must be either an animal or a plant."""
 
     def __init__(self, name, reproduction_rate, age):
-        """Initialize new living being."""
+        """Initialize a new living being."""
         self.name = name
         self.reproduction_rate = reproduction_rate
         self.reproduction_progress = 0

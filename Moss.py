@@ -13,6 +13,3 @@ class Moss(Plant):
             min_size=min_size,
             max_size=float("inf"),
             size_growth_speed=size_growth_speed)
-
-if __name__ == "__main__":
-    t = Moss("moss", 1, 5, 10, 5)
