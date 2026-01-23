@@ -8,7 +8,7 @@ class Herbivore(Animal):
 
     def __init__(self, name, reproduction_rate, age, food_requirement):
         """
-        Initialize an Herbivore.
+        Initialize a Herbivore.
         They eat plants until their food-requirement is met.
         """
         super().__init__(name, reproduction_rate, age, food_requirement)

@@ -123,7 +123,7 @@ class Habitat:
         for creature in self.living_beings[:]:
             creature.incr_age()
             #  Small chance to get sick.
-            if rng_sickness <= 10:
+            if rng_sickness <= 1:
                 creature.status.add("sick")
             # Check if living being reproduces.
             self.update_reproduction(creature)

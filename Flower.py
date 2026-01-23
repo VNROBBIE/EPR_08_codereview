@@ -8,7 +8,7 @@ class Flower(Plant):
     def __init__(self, name, age, size, min_size, max_size, size_growth_speed):
         """Initializes a flower."""
         super().__init__(name=name,
-                         reproduction_rate=4,
+                         reproduction_rate=2.5,
                          age=age,
                          size=size,
                          min_size=min_size,
