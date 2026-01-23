@@ -126,7 +126,9 @@ class Habitat:
             if rng_sickness <= 1:
                 creature.status.add("sick")
             # Check if living being reproduces.
-            self.update_reproduction(creature)
+            if not (isinstance(creature, Plant) and
+                    creature.size + self.occupied_space > self.size):
+                self.update_reproduction(creature)
             if isinstance(creature, Plant):
                 self.update_plant(creature)
             if isinstance(creature, Carnivore) and self.season != 3:
@@ -274,9 +276,9 @@ class Habitat:
         >>> d.food = 5
         >>> h.update_herbivores(d)
         >>> d.food
-        16.808
+        12.2
         >>> t.size
-        8.192
+        12.8
         >>> t.status
         {'withered'}
 
@@ -318,6 +320,11 @@ class Habitat:
         False
         >>> b.status
         set()
+        >>> b.status = {"injured"}
+        >>> b.injury_time = 3
+        >>> h.living_being_death_chance(b)
+        bear has recovered from its injuries.
+        False
         """
         rng_death = random.randint(1, 100)
         #  Starved, wounded and withered are guaranteed death.
