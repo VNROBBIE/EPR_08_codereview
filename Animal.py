@@ -1,7 +1,9 @@
+__author__ = "8572770, Kesidis, 8724694, Tran"
 import copy
 import doctest
 from abc import ABC, abstractmethod
 from LivingBeing import LivingBeing
+
 
 class Animal(LivingBeing, ABC):
     """An animal, that requires food to survive."""
@@ -15,15 +17,18 @@ class Animal(LivingBeing, ABC):
 
     @abstractmethod
     def gather_food(self):
-        pass
+        """Restocks the food stock of a living being."""
 
     def eat(self):
         """
-        Consumes current food amount. Animal gets hungry and then starves if too low on food.
+        Consumes current food amount.
+        Animal gets hungry and then starves if too low on food.
 
         >>> class TestAnimal(Animal):
-        ...    def __init__(self, name, reproduction_rate, age, food_requirement):
-        ...        super().__init__(name, reproduction_rate, age, food_requirement)
+        ...    def __init__(self, name, reproduction_rate, age,
+        ...             food_requirement):
+        ...        super().__init__(name, reproduction_rate, age,
+        ...             food_requirement)
         ...    def gather_food(self):
         ...        pass
         >>> a = TestAnimal("ape", 1, 3, 10)
@@ -50,11 +55,14 @@ class Animal(LivingBeing, ABC):
 
     def reproduce(self, season):
         """
-        Creates a copy of current living being, if reproduction progress reaches 1.
+        Creates a copy of current living being,
+        if reproduction progress reaches 1.
 
         >>> class TestAnimal(Animal):
-        ...    def __init__(self, name, reproduction_rate, age, food_requirement):
-        ...        super().__init__(name, reproduction_rate, age, food_requirement)
+        ...    def __init__(self, name, reproduction_rate, age,
+        ...                 food_requirement):
+        ...        super().__init__(name, reproduction_rate, age,
+        ...                 food_requirement)
         ...    def gather_food(self):
         ...        pass
 
@@ -82,12 +90,15 @@ class Animal(LivingBeing, ABC):
                 self.reproduction_progress -= 1
                 offspring = copy.deepcopy(self)
                 #  Bears same name as its parent, but enumerated.
-                offspring.name = str(self.name + " (" + str(self.offspring_number) + ")")
+                offspring.name = str(self.name +
+                                     " (" + str(self.offspring_number) + ")")
                 offspring.offspring_number = 0
                 offspring.status = set()
                 offspring.age = 0
                 offspring.food = offspring.food_requirement * 2
                 return offspring
+        return None
+
 
 if __name__ == "__main__":
     doctest.testmod()

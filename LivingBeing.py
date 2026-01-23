@@ -1,4 +1,6 @@
+__author__ = "8572770, Kesidis, 8724694, Tran"
 from abc import ABC, abstractmethod
+
 
 class LivingBeing(ABC):
     """A living being, that must be either an animal or a plant."""
@@ -19,5 +21,5 @@ class LivingBeing(ABC):
 
     @abstractmethod
     def reproduce(self, season):
-        """Creates a copy of current living being, if reproduction progress reaches 1."""
-        pass
+        """Creates a copy of current living being,
+        if reproduction progress reaches 1."""

@@ -1,7 +1,9 @@
+__author__ = "8572770, Kesidis, 8724694, Tran"
 from Plant import Plant
 
+
 class Moss(Plant):
-    """Mosses do not occupy space in the habitat and can only grow, not reproduce."""
+    """Mosses do not occupy space in the habitat and can not reproduce."""
 
     def __init__(self, name, age, size, min_size, size_growth_speed):
         """Initializes an instance of moss."""
