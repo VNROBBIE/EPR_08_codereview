@@ -1,10 +1,11 @@
+import copy
 from Plant import Plant
 
 class Tree(Plant):
     """Trees have a very high life expectancy compared to other plants."""
 
-    def __init__(self, name, reproduction_rate, age, size, min_size, max_size, size_growth_speed):
-        """Initilizes a Plant."""
+    def __init__(self, name, reproduction_rate, age ,size, min_size, max_size, size_growth_speed):
+        """Initilizes a tree."""
         super().__init__(name, reproduction_rate, age, size, min_size, max_size, size_growth_speed)
         self.life_expectancy = 100
 
@@ -16,15 +17,15 @@ class Tree(Plant):
             self.offspring_number += 1
             #  Reset reproduction progress.
             self.reproduction_progress -= 1
-            offspring = self
+            offspring = copy.deepcopy(self)
             #  Bears same name as its parent, but enumerated.
-            offspring.name = str(self.name + " (" + self.offspring_number + ")")
+            offspring.name = str(self.name + " (" + str(self.offspring_number) + ")")
             offspring.offspring_number = 0
             offspring.status = set()
             offspring.age = 0
             offspring.size = self.min_size
             return offspring
-        else:
-            #  Increase reproduction progress.
-            self.reproduction_progress += self.reproduction_rate
-            return None
+
+if __name__ == "__main__":
+    t = Tree("tree", 1, 5, 10, 5, 50, 1)
+    print(t.status)

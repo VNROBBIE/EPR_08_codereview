@@ -15,7 +15,7 @@ class Carnivore(Animal):
         injury_percentage = 10
         #  Hunt has a 50% chance for success.
         if RNG_food <= 50:
-            self.food += 1.5 * self.food_requirement
+            self.food += (random.random()) + 0.75 * self.food_requirement
             print(prey + " has been fed to " + self.name + ".")
             #  50/50 chance to catch a prey's disease.
             if "sick" in prey.status and RNG_food <= 25:

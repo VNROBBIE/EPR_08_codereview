@@ -3,8 +3,16 @@ from Plant import Plant
 class Moss(Plant):
     """Mosses do not occupy space in the habitat and can only grow, not reproduce."""
 
-    def __init__(self, name, age, life_expectancy, size, min_size, size_growth_speed):
+    def __init__(self, name, age, size, min_size, size_growth_speed):
         """Initializes an instance of moss."""
-        super().__init__(name, age, life_expectancy, size, min_size, size_growth_speed)
-        self.max_size = float("inf")
-        self.reproduction_rate = 0
+        super().__init__(
+            name=name,
+            reproduction_rate=0,
+            age=age,
+            size=size,
+            min_size=min_size,
+            max_size=float("inf"),
+            size_growth_speed=size_growth_speed)
+
+if __name__ == "__main__":
+    t = Moss("moss", 1, 5, 10, 5)

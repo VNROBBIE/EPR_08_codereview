@@ -1,3 +1,4 @@
+import copy
 from abc import ABC, abstractmethod
 from LivingBeing import LivingBeing
 
@@ -37,7 +38,7 @@ class Animal(LivingBeing, ABC):
                 self.offspring_number += 1
                 #  Reset reproduction progress.
                 self.reproduction_progress -= 1
-                offspring = self
+                offspring = copy.deepcopy(self)
                 #  Bears same name as its parent, but enumerated.
                 offspring.name = str(self.name + " (" + self.offspring_number + ")")
                 offspring.offspring_number = 0
@@ -45,7 +46,3 @@ class Animal(LivingBeing, ABC):
                 offspring.age = 0
                 offspring.food = offspring.food_requirement * 2
                 return offspring
-            else:
-                #  Increase reproduction progress.
-                self.reproduction_progress += self.reproduction_rate
-                return None

@@ -1,8 +1,11 @@
 import random
+import doctest
 from Plant import Plant
 from Animal import Animal
 from Carnivore import Carnivore
 from Herbivore import Herbivore
+from Flower import Flower
+from Tree import Tree
 from Moss import Moss
 
 class Habitat:
@@ -10,9 +13,12 @@ class Habitat:
 
     def __init__(self, size):
         """Initialize new habitat."""
-        if isinstance(size, int) or size < 0:
-            raise TypeError("Habitat size must be a positive whole number.")
-        self.size = size
+        if size < 0:
+            raise TypeError("Habitat size must be a positive number.")
+        try:
+            self.size = int(size)
+        except ValueError:
+            print("Habitat size must be a positive number.")
         self.living_beings = []
         self.occupied_space = 0
         self.time_passed = 0
@@ -20,6 +26,24 @@ class Habitat:
 
 
     def set_season(self, season):
+        """
+        Sets the habitat to a specified season.
+
+        >>> h = Habitat(100)
+        >>> h.set_season("spring")
+        >>> h.season == 0
+        True
+        >>> h.set_season("autumn")
+        >>> h.season == 2
+        True
+
+        Raises Valueerror if an invalid season name is entered.
+
+        >>> h.set_season("hello")
+        Traceback (most recent call last):
+        ...
+        ValueError: Invalid: Please enter one of the four seasons.
+        """
         match season:
             case "spring":
                 season = 0
@@ -31,11 +55,33 @@ class Habitat:
                 season = 3
             case _:
                 raise ValueError("Invalid: Please enter one of the four seasons.")
-        self.season = (season % 4) - 1
+        self.season = (season % 4)
 
 
     def calc_occupied_space(self):
-        """Calculates the current space occupied by plants."""
+        """
+        Calculates the current space occupied by plants.
+
+        >>> h = Habitat(500)
+        >>> t = Tree("tree", 1, 5, 10, 5, 50, 2)
+        >>> h.add_living_being(t)
+        >>> h.calc_occupied_space()
+        >>> h.occupied_space
+        10
+        >>> f = Flower("flower", 4, 2, 0, 5, 1)
+        >>> h.add_living_being(f)
+        >>> h.calc_occupied_space()
+        >>> h.occupied_space
+        12
+
+        Mosses do not add to the occupied space.
+
+        >>> m = Moss("moss", 10, 40, 10, 0.5)
+        >>> h.add_living_being(m)
+        >>> h.calc_occupied_space()
+        >>> h.occupied_space
+        12
+        """
         self.occupied_space = 0
         for creature in self.living_beings:
             if isinstance(creature, Plant) and not isinstance(creature, Moss):
@@ -43,13 +89,35 @@ class Habitat:
 
 
     def add_living_being(self, creature):
-        """Adds a new living being to the habitat."""
+        """
+        Adds a new living being to the habitat.
+
+        >>> h = Habitat(500)
+        >>> t = Tree("tree", 1, 5, 10, 5, 50, 2)
+        >>> h.add_living_being(t)
+        >>> t in h.living_beings
+        True
+        >>> f = Flower("flower", 4, 2, 0, 5, 1)
+        >>> h.add_living_being(f)
+        >>> f in h.living_beings
+        True
+        >>> m = Moss("moss", 10, 40, 10, 0.5)
+        >>> h.add_living_being(m)
+        >>> m in h.living_beings
+        True
+        """
         self.living_beings.append(creature)
         self.calc_occupied_space()
 
 
     def update_eco(self):
-        """Updates the ecosystem after every round."""
+        """
+        Updates the ecosystem after every round.
+
+        Doctests not possible due to complexity of an ecosystem and context-dependency.
+        """
+        if self.time_passed != 0:
+            self.season += 1
         #  Generate random number for random events.
         RNG_sickness = random.randint(1, 100)
         self.update_deaths()
@@ -69,27 +137,64 @@ class Habitat:
                 self.update_herbivores(creature)
                 #  Consume food.
                 creature.eat()
+        self.time_passed += 1
 
 
     def update_deaths(self):
-        """Removes all deaceased beings from the habitat."""
+        """
+        Removes all deceased beings from the habitat.
+
+        >>> h = Habitat(500)
+        >>> t = Tree("tree", 1, 5, 10, 5, 50, 2)
+        >>> h.add_living_being(t)
+        >>> t.status.add("withered")
+        >>> h.update_deaths()
+        tree has died.
+        >>> t in h.living_beings
+        False
+        >>> b = Carnivore("bear", 0.5, 12, 10)
+        >>> h.add_living_being(b)
+        >>> b.status.add("starved")
+        >>> h.update_deaths()
+        bear has starved.
+        >>> b in h.living_beings
+        False
+        """
         deceased_living_beings = []
         #   Check for death triggers for every creature.
         for creature in self.living_beings:
-            if self.living_being_death_chance(self, creature):
+            if self.living_being_death_chance(creature):
                 deceased_living_beings.append(creature)
         #  Create new living beings list without deceased animals.
         self.living_beings = [creature for creature in self.living_beings if creature not in deceased_living_beings]
 
 
     def update_reproduction(self, creature):
-        """Update the reproduction progress for all living beings."""
+        """
+        Update the reproduction progress for all living beings.
+
+        >>> h = Habitat(500)
+        >>> b = Carnivore("bear", 0.6, 12, 10)
+        >>> h.add_living_being(b)
+        >>> h.update_reproduction(b)
+        >>> b.reproduction_progress
+        0.6
+        >>> t = Tree("tree", 1, 5, 10, 5, 50, 2)
+        >>> h.add_living_being(t)
+        >>> len(h.living_beings)
+        2
+        >>> h.update_reproduction(t)
+        >>> len(h.living_beings)
+        3
+        """
+        #  Increase reproduction progress.
+        creature.reproduction_progress += creature.reproduction_rate
         while True:
-            offspring = creature.reproduce()
+            offspring = creature.reproduce(self.season)
             if offspring is None:
                 break
             #  Add newborn creature to habitat.
-            self.living_beings.append(creature.reproduce())
+            self.living_beings.append(offspring)
 
 
     def update_plant(self, plant):
@@ -130,13 +235,13 @@ class Habitat:
         RNG_death = random.randint(1, 100)
         #  Starved, wounded and withered are guaranteed death.
         if len(creature.status) != 0:
-            if "starved" in creature:
-                print(self.name + " starved.")
+            if "starved" in creature.status:
+                print(creature.name + " has starved.")
                 return True
-            if "wounded" in creature:
+            if "wounded" in creature.status:
                 print(creature.name + " has succumbed to its injuries.")
                 return True
-            if "withered" in creature:
+            if "withered" in creature.status:
                 print(creature.name + " has died.")
                 return True
             if "old" in creature.status:
@@ -169,4 +274,19 @@ class Habitat:
                     creature.injury_time += 1
         return False
 
+if __name__ == "__main__":
+    doctest.testmod()
+""" tests
+    h = Habitat(500)
+    b = Carnivore("bear", 0.6, 12, 10)
+    h.add_living_being(b)
+    h.update_reproduction(b)
+    print(b.reproduction_progress)
+    t = Tree("tree", 1, 5, 10, 5, 50, 2)
+    h.add_living_being(t)
+    h.update_reproduction(t)
+    print(h.living_beings)
+    for i in h.living_beings:
+        print(i.name)
+        """
 

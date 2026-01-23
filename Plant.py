@@ -1,11 +1,12 @@
+import copy
 from LivingBeing import LivingBeing
 
 class Plant(LivingBeing):
     """A plant occupying space in the habitat based on its size. Withers when size is below min size."""
 
-    def __init__(self, name, reproduction_rate, age, life_expectancy, size, min_size, max_size, size_growth_speed):
+    def __init__(self, name, reproduction_rate, age, size, min_size, max_size, size_growth_speed):
         """Initialize a plant."""
-        super().__init__(name, reproduction_rate, age, life_expectancy)
+        super().__init__(name, reproduction_rate, age)
         self.size = size
         self.min_size = min_size
         self.max_size = max_size
@@ -25,7 +26,7 @@ class Plant(LivingBeing):
                 self.offspring_number += 1
                 #  Reset reproduction progress.
                 self.reproduction_progress -= 1
-                offspring = self
+                offspring = copy.deepcopy(self)
                 #  Bears same name as its parent, but enumerated.
                 offspring.name = str(self.name + " (" + self.offspring_number + ")")
                 offspring.offspring_number = 0
@@ -33,7 +34,3 @@ class Plant(LivingBeing):
                 offspring.age = 0
                 offspring.size = self.min_size
                 return offspring
-            else:
-                #  Increase reproduction progress.
-                self.reproduction_progress += self.reproduction_rate
-                return None
