@@ -9,7 +9,7 @@ class Animal(LivingBeing, ABC):
         """Initialize new animal."""
         super().__init__(name, reproduction_rate, age)
         self.food_requirement = food_requirement
-        self.food = food_requirement * 2
+        self.food = food_requirement * 1.5
         self.injury_time = 0
 
     @abstractmethod

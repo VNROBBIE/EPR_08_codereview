@@ -10,7 +10,7 @@ class LivingBeing(ABC):
         self.reproduction_progress = 0
         self.status = set()
         self.age = age
-        self.life_expectancy = 40
+        self.life_expectancy = 50
         self.offspring_number = 0
 
     def incr_age(self):

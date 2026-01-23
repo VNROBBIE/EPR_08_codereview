@@ -16,11 +16,12 @@ class Carnivore(Animal):
         #  Hunt has a 50% chance for success.
         if RNG_food <= 50:
             self.food += (random.random()) + 0.75 * self.food_requirement
-            print(prey + " has been fed to " + self.name + ".")
+            print(prey.name + " has been fed to " + self.name + ".")
             #  50/50 chance to catch a prey's disease.
             if "sick" in prey.status and RNG_food <= 25:
                 self.status.add("sick")
                 print("Its infection has spreaded to " + self.name)
+            prey.status.add("devoured")
         #  Small chance for hunt to critically fail and injure the predator.
         #  Chance is increased if prey is carnivorous.
         elif (isinstance(prey, Carnivore) and RNG_food >= 100 - injury_percentage - 20)\
@@ -32,5 +33,5 @@ class Carnivore(Animal):
             else:
                 #  Predator gets injured in case of a critical failure.
                 self.status.add("injured")
-                print(self.name + " has injured itself on a hunt.")
+                print(self.name + " has injured itself while on a hunt.")
 

@@ -118,9 +118,9 @@ class Habitat:
         """
         if self.time_passed != 0:
             self.season += 1
+        self.update_deaths()
         #  Generate random number for random events.
         RNG_sickness = random.randint(1, 100)
-        self.update_deaths()
         #   Update every living being.
         for creature in self.living_beings:
             creature.incr_age()
@@ -198,17 +198,60 @@ class Habitat:
 
 
     def update_plant(self, plant):
-        """Grow every plant."""
+        """
+        Grow every plant.
+
+        >>> h = Habitat(500)
+        >>> t = Tree("tree", 1, 5, 10, 5, 50, 2)
+        >>> h.add_living_being(t)
+        >>> h.update_plant(t)
+        >>> t.size
+        12
+
+        If no space is left, plants cannot grow further.
+
+        >>> f = Flower("flower", 4, 2, 0, 5, 1)
+        >>> h.add_living_being(f)
+        >>> h.occupied_space = 500
+        >>> h.update_plant(f)
+        >>> f.size
+        2
+
+        Mosses do not take any space and can grow infinitely.
+
+        >>> m = Moss("moss", 10, 40, 10, 20)
+        >>> h.add_living_being(m)
+        >>> h.occupied_space = 500
+        >>> h.update_plant(m)
+        >>> m.size
+        60
+        """
         new_plant_size = plant.grow()
         #  Check if new size exceeds max size or available Habitat space.
-        if (new_plant_size <= plant.max_size and new_plant_size + self.occupied_space <= self.size)\
+        if (new_plant_size <= plant.max_size and new_plant_size - plant.size + self.occupied_space <= self.size)\
                 or isinstance(plant, Moss):
             plant.size = new_plant_size
             self.calc_occupied_space()
 
 
     def update_hunt(self, predator):
-        """Start a hunt for every carnivore."""
+        """
+        Start a hunt for every carnivore.
+
+        >>> h = Habitat(500)
+        >>> b = Carnivore("bear", 0.5, 12, 10)
+        >>> h.add_living_being(b)
+        >>> d = Herbivore("deer", 0.7, 2, 10)
+        >>> h.add_living_being(d)
+        >>> random.seed(2)
+        >>> h.update_hunt(b)
+        deer has been fed to bear.
+        >>> b.food
+        22.58487199515892
+        >>> random.seed(5)
+        >>> h.update_hunt(b)
+        bear has injured itself while on a hunt.
+        """
         if isinstance(predator, Carnivore):
             #   Create list of potential preys (herbivores).
             if any(isinstance(prey, Herbivore) for prey in self.living_beings):
@@ -217,11 +260,34 @@ class Habitat:
                 #  Will resort to hunting other carnivores if no herbivores available.
                 prey_list = [prey for prey in self.living_beings]
             if len(prey_list) > 0:
-                predator.gather_food(random.choice(self.prey_list))
+                predator.gather_food(random.choice(prey_list))
 
 
     def update_herbivores(self, herbivore):
-        """Make all Herbivores eat a random plant until they are fully fed."""
+        """
+        Make all Herbivores eat random plants until they are fully fed.
+
+        >>> h = Habitat(500)
+        >>> t = Tree("tree", 1, 5, 10, 5, 50, 2)
+        >>> h.add_living_being(t)
+        >>> d = Herbivore("deer", 0.7, 2, 10)
+        >>> h.add_living_being(d)
+        >>> d.food = 5
+        >>> h.update_herbivores(d)
+        >>> d.food
+        10.904
+        >>> t.size
+        4.096
+        >>> t.status
+        {'withered'}
+
+        Tree can't be eaten if it has withered.
+
+        >>> d.food = 8
+        >>> h.update_herbivores(d)
+        >>> d.food
+        8
+        """
         while herbivore.food < herbivore.food_requirement:
             plants_list = [plant for plant in self.living_beings if isinstance(plant, Plant) and "withered" not in plant.status]
             if len(plants_list) == 0:
@@ -231,12 +297,35 @@ class Habitat:
 
 
     def living_being_death_chance(self, creature):
-        """Calculate whether a creature dies or not based on its status."""
+        """
+        Calculate whether a creature dies or not based on its status.
+
+        >>> h = Habitat(500)
+        >>> b = Carnivore("bear", 0.5, 12, 10)
+        >>> h.add_living_being(b)
+        >>> b.status.add("starved")
+        >>> h.living_being_death_chance(b)
+        bear has starved.
+        True
+        >>> random.seed(1)
+        >>> b.status = {"sick"}
+        >>> h.living_being_death_chance(b)
+        Sickness has consumed bear.
+        True
+        >>> random.seed(19)
+        >>> h.living_being_death_chance(b)
+        bear has recovered from its sickness.
+        False
+        >>> b.status
+        set()
+        """
         RNG_death = random.randint(1, 100)
         #  Starved, wounded and withered are guaranteed death.
         if len(creature.status) != 0:
             if "starved" in creature.status:
                 print(creature.name + " has starved.")
+                return True
+            if "devoured" in creature.status:
                 return True
             if "wounded" in creature.status:
                 print(creature.name + " has succumbed to its injuries.")
@@ -255,8 +344,8 @@ class Habitat:
                 if RNG_death <= 30:
                     print("Sickness has consumed " + creature.name + ".")
                     return True
+                #  Small chance to recover from sickness when it is not winter.
                 elif RNG_death >= 85 and self.season != 3:
-                    #  Small chance to recover from sickness.
                     creature.status.remove("sick")
                     print(creature.name + " has recovered from its sickness.")
             if "injured" in creature.status:
@@ -289,4 +378,5 @@ if __name__ == "__main__":
     for i in h.living_beings:
         print(i.name)
         """
+
 
