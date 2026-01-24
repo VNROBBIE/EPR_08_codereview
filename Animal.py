@@ -40,6 +40,7 @@ class Animal(LivingBeing, ABC):
         ape is no longer hungry.
         """
         self.food -= self.food_requirement
+        #  Check if requirement is met.
         if self.food < 0:
             self.food = 0
             if "hungry" not in self.status:

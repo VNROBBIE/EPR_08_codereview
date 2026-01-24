@@ -1,9 +1,10 @@
 __author__ = "8572770, Kesidis, 8724694, Tran"
 import random
 import doctest
-from Plant import Plant
+from Animal import Animal
 from Carnivore import Carnivore
 from Herbivore import Herbivore
+from Plant import Plant
 from Flower import Flower
 from Tree import Tree
 from Moss import Moss
@@ -260,7 +261,8 @@ class Habitat:
                          isinstance(prey, Herbivore) and prey is not predator]
         else:
             #  Will resort to hunting other carnivores if no herbivores exist.
-            prey_list = list(self.living_beings)
+            prey_list = [prey for prey in self.living_beings if
+                         isinstance(prey, Animal) and prey is not predator]
         if len(prey_list) > 0:
             predator.gather_food(random.choice(prey_list))
 

@@ -33,6 +33,7 @@ class Herbivore(Animal):
         """
         food_eaten = plant.size * 0.2
         self.food += food_eaten
+        #  Reduce plant size.
         plant.size -= food_eaten
         if plant.size < plant.min_size:
             plant.status.add("withered")
