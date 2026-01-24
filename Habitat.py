@@ -24,39 +24,33 @@ class Habitat:
         self.living_beings = []
         self.occupied_space = 0
         self.time_passed = 0
-        self.season = 0
+        self.season = "spring"
+        self.season_value = 0
 
-    def set_season(self, season):
+    def set_season(self):
         """
         Sets the habitat to a specified season.
 
         >>> h = Habitat(100)
-        >>> h.set_season("spring")
-        >>> h.season == 0
+        >>> h.season_value = 0
+        >>> h.set_season()
+        >>> h.season == "spring"
         True
-        >>> h.set_season("autumn")
-        >>> h.season == 2
+        >>> h.season_value = 2
+        >>> h.set_season()
+        >>> h.season == "autumn"
         True
-
-        Raises Valueerror if an invalid season name is entered.
-
-        >>> h.set_season("hello")
-        Traceback (most recent call last):
-        ...
-        ValueError: Please enter one of the four seasons.
         """
-        match season:
-            case "spring":
-                season = 0
-            case "summer":
-                season = 1
-            case "fall" | "autumn":
-                season = 2
-            case "winter":
-                season = 3
-            case _:
-                raise ValueError("""Please enter one of the four seasons.""")
-        self.season = season % 4
+        season_index = self.season_value % 4
+        match season_index:
+            case 0:
+                self.season = "spring"
+            case 1:
+                self.season = "summer"
+            case 2:
+                self.season = "autumn"
+            case 3:
+                self.season = "winter"
 
     def calc_occupied_space(self):
         """
@@ -115,8 +109,9 @@ class Habitat:
         Doctests not possible due to complexity
         of an ecosystem and context-dependency.
         """
-        if self.time_passed != 0:
-            self.season += 1
+        #  Change seasons.
+        self.season_value += 1
+        self.set_season()
         self.update_deaths()
         #  Generate random number for random events.
         rng_sickness = random.randint(1, 100)
