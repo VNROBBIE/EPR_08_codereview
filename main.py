@@ -35,7 +35,7 @@ def create_start_population(habitat):
     herbivores = read_int("Number of herbivores: ", 0)
     carnivores = read_int("Number of carnivores: ", 0)
     omnivores = read_int("Number of omnivores: ", 0)
-    
+
     # Names for flowers
     for i in range(flowers):
         habitat.add_living_being(Flower(f"Flower{i}"))
@@ -55,10 +55,11 @@ def create_start_population(habitat):
     # Names for carnivores
     for i in range(carnivores):
         habitat.add_living_being(Carnivore(f"Carnivore{i}"))
-    
+
     # Names for omnivores
     for i in range(omnivores):
         habitat.add_living_being(Omnivore(f"Omnivore{i}"))
+
 
 def print_status(habitat):
     """Print an overview of the ecosystem state."""
@@ -84,7 +85,7 @@ def print_status(habitat):
 
         if isinstance(creature, Carnivore):
             carnivores += 1
-        
+
         if isinstance(creature, Omnivore):
             omnivores += 1
 
