@@ -180,6 +180,7 @@ class Habitat:
         >>> len(h.living_beings)
         2
         >>> h.update_reproduction(t)
+        >>> h.update_reproduction(t)
         >>> len(h.living_beings)
         3
         """
